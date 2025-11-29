@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Date Arrange</title>
+    <style>
+        .love-button {
+            background: linear-gradient(45deg, #ff6b6b, #ff8e8e);
+            font-family: Didot, serif;
+            border: none;
+            border-radius: 50px;
+            color: white;
+            padding: 15px 30px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .love-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 107, 107, 0.4);
+        }
+
+        .love-button:active {
+            transform: translateY(0);
+        }
+
+        .heart {
+            position: fixed;
+            font-size: 20px;
+            color: #ff6b6b;
+            pointer-events: none;
+            z-index: 1000;
+            animation: fall 3s linear forwards;
+        }
+
+        @keyframes fall {
+            0% {
+                opacity: 1;
+                transform: translateY(0) rotate(0deg);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(100vh) rotate(360deg);
+            }
+        }
+
+        .heart:nth-child(2n) {
+            animation-duration: 2.5s;
+            font-size: 25px;
+        }
+
+        .heart:nth-child(3n) {
+            animation-duration: 3.5s;
+            font-size: 15px;
+        }
+
+        body {
+            font-family: Didot, serif;
+            background: linear-gradient(135deg, #FF8F8F, #fab1a0);
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+        }
+
+        .main-content {
+            max-width: 600px;
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .sidebar {
+            width: 250px;
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            height: fit-content;
+            position: sticky;
+            top: 20px;
+        }
+
+        .sidebar h3 {
+            color: #2d3436;
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+
+        .selection-item {
+            background: linear-gradient(45deg, #a8e6cf, #88d8a3);
+            margin: 8px 0;
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 14px;
+            color: #2d3436;
+            font-weight: bold;
+        }
+
+        .selection-category {
+            background: linear-gradient(45deg, #ffd3a5, #fd9853);
+            margin: 5px 0;
+            padding: 6px 10px;
+            border-radius: 6px;
+            font-size: 12px;
+            color: #2d3436;
+            font-weight: bold;
+        }
+
+        .no-selections {
+            color: #636e72;
+            font-style: italic;
+            font-size: 14px;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        h1 {
+            color: #2d3436;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .hidden-loveyou {
+            display: none;
+            font-size: 24px;
+            color: #d63031;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        li {
+            list-style-position: inside;
+            text-align: center;
+            cursor: pointer;
+            padding: 10px 15px;
+            margin: 5px 0;
+            border-radius: 10px;
+            background: linear-gradient(45deg, #ffeaa7, #fdcb6e);
+            color: #2d3436;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        li:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(253, 203, 110, 0.4);
+            background: linear-gradient(45deg, #fdcb6e, #e17055);
+            color: white;
+        }
+
+        li:active {
+            transform: translateY(0);
+        }
+
+        .hidden-restaurants {
+            margin-top: 20px;
+            display: none;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.5s ease;
+        }
+
+        .hidden-restaurants.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .hidden-movie {
+            margin-top: 20px;
+            display: none;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.5s ease;
+        }
+
+        .hidden-movie.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .hidden-nightcity {
+            margin-top: 20px;
+            display: none;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.5s ease;
+        }
+
+        .hidden-nightcity.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .hidden-zoo {
+            margin-top: 20px;
+            display: none;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.5s ease;
+        }
+
+        .hidden-zoo.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .first-ul, .second-ul {
+            display: inline;
+            justify-content: center;
+            padding: 0;
+        }
+        .first-ul li {
+            text-align: center;
+            width: 200px;
+            margin: 15px auto;
+            list-style-type: none;
+        }
+
+        .second-ul li {
+            text-align: center;
+            width: 320px;
+            margin: 15px auto;
+        }
+
+        /* Mobile Responsiveness */
+        @media screen and (max-width: 768px) {
+            body {
+                flex-direction: column;
+                padding: 10px;
+                gap: 15px;
+            }
+
+            .sidebar {
+                width: 100%;
+                position: static;
+                order: -1;
+                margin-bottom: 20px;
+            }
+
+            .main-content {
+                width: 100%;
+                padding: 20px;
+            }
+
+            .container {
+                padding: 20px;
+            }
+
+            .first-ul li {
+                width: 100%;
+                margin: 10px 0;
+                padding: 12px 10px;
+                font-size: 16px;
+            }
+
+            .second-ul li {
+                width: 100%;
+                margin: 10px 0;
+                padding: 12px 10px;
+                font-size: 14px;
+            }
+
+            .love-button {
+                padding: 12px 20px;
+                font-size: 16px;
+            }
+
+            h1 {
+                font-size: 24px;
+            }
+
+            h3 {
+                font-size: 18px;
+            }
+
+            .sidebar h3 {
+                font-size: 16px;
+            }
+
+            .selection-item {
+                font-size: 12px;
+                padding: 6px 8px;
+            }
+
+            .selection-category {
+                font-size: 11px;
+                padding: 4px 6px;
+            }
+
+            input[type="text"], input[type="date"], input[type="time"] {
+                width: 100%;
+                padding: 10px;
+                font-size: 16px;
+                margin: 5px 0;
+                box-sizing: border-box;
+            }
+
+            button {
+                padding: 10px 15px;
+                font-size: 14px;
+                margin: 5px;
+            }
+
+            form {
+                padding: 0 10px;
+            }
+
+            .hidden-restaurants, .hidden-movie, .hidden-nightcity, .hidden-zoo {
+                padding: 0 10px;
+            }
+        }
+
+        @media screen and (max-width: 480px) {
+            .sidebar {
+                padding: 15px;
+            }
+
+            .main-content {
+                padding: 15px;
+            }
+
+            .first-ul li {
+                padding: 10px 8px;
+                font-size: 14px;
+            }
+
+            .second-ul li {
+                padding: 10px 8px;
+                font-size: 12px;
+            }
+
+            .love-button {
+                padding: 10px 15px;
+                font-size: 14px;
+            }
+
+            h1 {
+                font-size: 20px;
+            }
+
+            h3 {
+                font-size: 16px;
+            }
+
+            button {
+                padding: 8px 12px;
+                font-size: 12px;
+                margin: 3px;
+            }
+        }
+
+        .dateForm {
+            background-color: #FFFCFB;
+            border-radius: 30px;
+            width: 500px;
+        }
+
+    </style>
+</head>
+<body>
+<!-- Sidebar for selections -->
+<div class="sidebar">
+    <h3>📝 Your Selections</h3>
+    <div id="selection-summary">
+        <div class="no-selections">No selections yet</div>
+    </div><br><br>
+    <button onclick="clearSelections()">Clear Selections</button>
+    <button onclick="copySelections()">Copy Selections</button>
+</div>
+
+<!-- Main content -->
+<div class="main-content">
+    <h1>You've been invited to a date!</h1>
+
+    <div><h3>List of date options to choose from:</h3>
+        <ul class="first-ul">
+            <li onclick="toggleHiddenSection('restaurants')">🍽️ Casual Dinner</li>
+            <li onclick="toggleHiddenSection('movie')">🎬 Movie Night</li>
+            <li onclick="toggleHiddenSection('nightcity')">🌃 A Night in the City</li>
+            <li onclick="toggleHiddenSection('zoo')">🦁 Zoo Light show</li>
+        </ul>
+    </div><br>
+    <!-- Hidden Restaurant Section -->
+    <div class="hidden-restaurants">
+        <h3>Restaurant options I've selected:</h3>
+        <datalist id="restaurants">
+            <option value="Capital Grille">
+            <option value="Carraba's Italian Grill">
+            <option value="Cheesecake Factory">
+            <option value="Holy Taco">
+            <option value="I'm okay with any of these"></option>
+        </datalist>
+        <input type="text" list="restaurants" placeholder="Choose a restaurant">
+        <br><br><br>
+    </div>
+
+    <!-- Hidden Movie Section -->
+    <div class="hidden-movie">
+        <h3>Movie options I've selected:</h3>
+        <datalist id="movies">
+            <option value="Inception">
+            <option value="The Grand Budapest Hotel">
+            <option value="La La Land">
+            <option value="The Dark Knight">
+            <option value="I'm okay with any of these">
+        </datalist>
+        <input type="text" list="movies" placeholder="Choose a movie">
+    </div><br>
+    <!-- Hidden Night in the City Section -->
+    <div class="hidden-nightcity">
+        <h3>City activities I've selected:</h3>
+        <ul class="second-ul">
+            <li id="cityActivity">Visit a rooftop bar</li>
+            <li id="cityActivity1">Visit a Holiday Theme Bar</li>
+            <li id="cityActivity2">Enjoy live music at a local venue</li>
+            <li id="cityActivity3">Dine at a late-night café</li>
+        </ul>
+    </div><br>
+    <!-- Hidden Zoo Section -->
+    <div class="hidden-zoo">
+        <h3>Upcoming Zoo light show:</h3>
+        <p><a href="https://zooatlanta.org/event/IllumiNights/?utm_source=google&utm_medium=cpc&utm_campaign=IllumiNights&utm_content=Brand-IllumiNights&utm_term=zoo%20atlanta%20lights&gad_source=1">Zoo Light Show Details</a></p>
+        <button onclick="selectZooResponse('Yes')">Yes</button>
+        <button onclick="selectZooResponse('Maybe next time!')">Maybe next time!</button>
+    </div><br><br><br>
+
+
+
+    <div class="dateForm">
+        <p>Please choose a date and time that works best for you:</p>
+        <form action="/submit-date" method="post">
+        <label for="date">Select a date:</label>
+        <input type="date" id="date" name="date" required>
+        <br><br>
+        <label for="time">Select a time:</label>
+        <input type="time" id="time" name="time" required>
+    </form>
+    </div>
+    
+    <br><br><br><br><br>
+
+
+    
+
+    <div style="text-align: center; margin-top: 30px;">
+        <button class="love-button" onclick="createHearts()">💖 Click here for a surprise! 💖</button>
+    </div>
+    <div class="hidden-loveyou"><p>Love You ❣️</p></div>
+</div>
+    <script>
+       
+       // Object to store user selections
+        let userSelections = {
+            dateType: null,
+            restaurant: null,
+            movie: null,
+            cityActivity: null,
+            date: null,
+            time: null,
+            zooResponse: null,
+            note: null
+        };
+
+        // Update the sidebar with current selections
+        function updateSidebar() {
+            const summaryDiv = document.getElementById('selection-summary');
+            let html = '';
+
+            if (userSelections.dateType) {
+                html += `<div class="selection-category">Date Type</div>`;
+                html += `<div class="selection-item">${userSelections.dateType}</div>`;
+            }
+
+            if (userSelections.restaurant) {
+                html += `<div class="selection-category">Restaurant</div>`;
+                html += `<div class="selection-item">${userSelections.restaurant}</div>`;
+            }
+
+            if (userSelections.movie) {
+                html += `<div class="selection-category">Movie</div>`;
+                html += `<div class="selection-item">${userSelections.movie}</div>`;
+            }
+
+            if (userSelections.date) {
+                html += `<div class="selection-category">Date</div>`;
+                html += `<div class="selection-item">${userSelections.date}</div>`;
+            }
+
+            if (userSelections.time) {
+                html += `<div class="selection-category">Time</div>`;
+                html += `<div class="selection-item">${userSelections.time}</div>`;
+            }
+
+            if (userSelections.zooResponse) {
+                html += `<div class="selection-category">Zoo Response</div>`;
+                html += `<div class="selection-item">${userSelections.zooResponse}</div>`;
+            }
+
+            if (userSelections.cityActivity) {
+                html += `<div class="selection-category">City Activity</div>`;
+                html += `<div class="selection-item">${userSelections.cityActivity}</div>`;
+            }
+
+            if (!html) {
+                html = '<div class="no-selections">No selections yet</div>';
+            }
+
+            summaryDiv.innerHTML = html;
+        }
+
+        // Toggle hidden sections - shows only the selected section
+        function toggleHiddenSection(sectionName) {
+            // List of all section names
+            const allSections = ['restaurants', 'movie', 'nightcity', 'zoo'];
+            
+            // Update date type selection
+            const dateTypeMap = {
+                'restaurants': '🍽️ Casual Dinner',
+                'movie': '🎬 Movie Night',
+                'nightcity': '🌃 A Night in the City',
+                'zoo': '🦁 Zoo Light show'
+            };
+            userSelections.dateType = dateTypeMap[sectionName];
+            updateSidebar();
+            
+            // Hide all sections EXCEPT the target section
+            allSections.forEach(name => {
+                if (name !== sectionName) {
+                    const section = document.querySelector('.hidden-' + name);
+                    if (section) {
+                        section.classList.remove('show');
+                        setTimeout(() => {
+                            section.style.display = 'none';
+                        }, 500);
+                    }
+                }
+            });
+            
+            // Show the selected section immediately
+            const targetSection = document.querySelector('.hidden-' + sectionName);
+            if (targetSection) {
+                targetSection.style.display = 'block';
+                setTimeout(() => {
+                    targetSection.classList.add('show');
+                }, 50);
+            }
+        }
+
+        // Function to handle zoo button selections
+        function selectZooResponse(response) {
+            userSelections.zooResponse = response;
+            updateSidebar();
+            alert(`Zoo response recorded: ${response}`);
+        }
+
+        // Create falling hearts and reveal message
+        function createHearts() {
+            // Create multiple hearts
+            for (let i = 0; i < 15; i++) {
+                setTimeout(() => {
+                    createSingleHeart();
+                }, i * 100);
+            }
+            
+            // Reveal the hidden love message
+            const hiddenMessage = document.querySelector('.hidden-loveyou');
+            if (hiddenMessage) {
+                // Add a slight delay before showing the message for dramatic effect
+                setTimeout(() => {
+                    hiddenMessage.style.display = 'block';
+                    hiddenMessage.style.opacity = '0';
+                    hiddenMessage.style.transform = 'translateY(20px)';
+                    hiddenMessage.style.transition = 'all 0.8s ease';
+                    
+                    // Animate the message appearing
+                    setTimeout(() => {
+                        hiddenMessage.style.opacity = '1';
+                        hiddenMessage.style.transform = 'translateY(0)';
+                    }, 50);
+                }, 800); // Show message after hearts start falling
+            }
+        }
+
+        // Create a single heart element
+        function createSingleHeart() {
+            const heart = document.createElement('div');
+            heart.className = 'heart';
+            heart.innerHTML = '❤️';
+            
+            // Random horizontal position
+            heart.style.left = Math.random() * window.innerWidth + 'px';
+            heart.style.top = '-50px';
+            
+            // Add some random horizontal drift
+            heart.style.transform = `translateX(${(Math.random() - 0.5) * 100}px)`;
+            
+            document.body.appendChild(heart);
+            
+            // Remove heart after animation completes
+            setTimeout(() => {
+                if (heart && heart.parentNode) {
+                    heart.parentNode.removeChild(heart);
+                }
+            }, 4000);
+        }
+
+        // Track form selections
+        document.addEventListener('DOMContentLoaded', function() {
+            // Track restaurant selection
+            const restaurantInput = document.querySelector('input[list="restaurants"]');
+            if (restaurantInput) {
+                restaurantInput.addEventListener('change', function() {
+                    if (this.value) {
+                        userSelections.restaurant = this.value;
+                        updateSidebar();
+                    }
+                });
+            }
+
+            // Track movie selection
+            const movieInput = document.querySelector('input[list="movies"]');
+            if (movieInput) {
+                movieInput.addEventListener('change', function() {
+                    if (this.value) {
+                        userSelections.movie = this.value;
+                        updateSidebar();
+                    }
+                });
+            }
+
+            // Track date selection
+            const dateInput = document.querySelector('input[type="date"]');
+            if (dateInput) {
+                dateInput.addEventListener('change', function() {
+                    if (this.value) {
+                        userSelections.date = this.value;
+                        updateSidebar();
+                    }
+                });
+            }
+
+            // Track city activity selection
+            const cityActivityLi = document.getElementById('cityActivity');
+            const cityActivityLi1 = document.getElementById('cityActivity1');
+            const cityActivityLi2 = document.getElementById('cityActivity2');
+            const cityActivityLi3 = document.getElementById('cityActivity3');
+
+
+            if (cityActivityLi) {
+                cityActivityLi.addEventListener('click', function() {
+                    userSelections.cityActivity = this.innerText;
+                    updateSidebar();
+                });
+            }
+            if (cityActivityLi1) {
+                cityActivityLi1.addEventListener('click', function() {
+                    userSelections.cityActivity = this.innerText;
+                    updateSidebar();
+                });
+            }
+            if (cityActivityLi2) {
+                cityActivityLi2.addEventListener('click', function() {
+                    userSelections.cityActivity = this.innerText;
+                    updateSidebar();
+                });
+            }
+            if (cityActivityLi3) {
+                cityActivityLi3.addEventListener('click', function() {
+                    userSelections.cityActivity = this.innerText;
+                    updateSidebar();
+                });
+            }
+
+            // Track time selection
+            const timeInput = document.querySelector('input[type="time"]');
+            if (timeInput) {
+                timeInput.addEventListener('change', function() {
+                    if (this.value) {
+                        userSelections.time = this.value;
+                        updateSidebar();
+                    }
+                });
+            }
+        });
+
+
+        function clearSelections() {
+            userSelections = {
+                dateType: null,
+                restaurant: null,
+                movie: null,
+                date: null,
+                time: null,
+                zooResponse: null,
+                note: null
+            };
+            updateSidebar();
+        }
+
+        function copySelections() {
+            const selections = JSON.stringify(userSelections, null, 2);
+            navigator.clipboard.writeText(selections).then(() => {
+                alert("Selections copied to clipboard!");
+            });
+        }
+
+        function copyValue() {
+            const sourceDiv = document.getElementById('sourceDiv');
+            const textToCopy = sourceDiv.innerText || sourceDiv.textContent;
+            const targetDiv = document.getElementById('selection-summary');
+            targetDiv.innerText += textToCopy;
+        }
+        
+
+    </script>
+
+</body>
+</html>
